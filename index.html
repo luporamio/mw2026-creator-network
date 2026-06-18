@@ -187,6 +187,41 @@
     .filter-scroll { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
     .filter-scroll::-webkit-scrollbar { display: none; }
 
+    /* Tipo tabs */
+    .tipo-tab {
+      padding: 10px 24px; border-radius: 99px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.83rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s;
+      border: 1.5px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+    }
+    .tipo-tab:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); }
+    .tipo-tab.active-creator {
+      background: rgba(120,229,145,0.12);
+      border-color: rgba(120,229,145,0.45);
+      color: #9FF9B4;
+    }
+    .tipo-tab.active-influencer {
+      background: rgba(105,180,234,0.12);
+      border-color: rgba(105,180,234,0.45);
+      color: #69B4EA;
+    }
+
+    /* Follower range chips */
+    .fl-chip {
+      padding: 5px 14px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent; color: rgba(255,255,255,0.4);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .fl-chip:hover { border-color: rgba(244,200,66,0.35); color: rgba(255,255,255,0.7); }
+    .fl-chip.active { background: rgba(244,200,66,0.1); border-color: rgba(244,200,66,0.4); color: #F4C842; }
+
     #creator-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -584,24 +619,58 @@
 <!-- CREATOR NETWORK -->
 <section id="creator-network" class="py-24">
   <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header dinamico -->
     <div class="mb-10 gsap-fade">
       <p class="section-label mb-4">Il network</p>
-      <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4">191 talent. <span class="text-grad">Esplora il network.</span> 👀</h2>
-      <p class="text-white/50 max-w-lg">Creator, influencer, speaker e ospiti confermati per MW2026. Filtra per settore e scegli chi vuoi nel tuo pacchetto.</p>
+      <h2 id="network-title" class="font-display text-4xl lg:text-5xl font-bold mb-4">
+        Creator attivabili. <span class="text-grad">Scegli il tuo pacchetto. 🎯</span>
+      </h2>
+      <p id="network-subtitle" class="text-white/50 max-w-xl">
+        112 creator confermati con attivazioni sponsor disponibili: Reel, Stories, ADV, codici affiliazione. Filtra per settore e followers per trovare il profilo giusto per il tuo brand.
+      </p>
     </div>
 
-    <div class="filter-scroll mb-8">
-      <div class="flex gap-3 pb-2" id="filter-chips">
-        <button class="filter-chip active" data-sector="all">Tutti</button>
-        <button class="filter-chip" data-sector="marketing">Marketing</button>
-        <button class="filter-chip" data-sector="ai">AI &amp; Tech</button>
-        <button class="filter-chip" data-sector="finance">Finance</button>
-        <button class="filter-chip" data-sector="travel">Travel &amp; Lifestyle</button>
-        <button class="filter-chip" data-sector="sport">Sport &amp; Wellness</button>
-        <button class="filter-chip" data-sector="content">Content Creation</button>
-        <button class="filter-chip" data-sector="crescita">Crescita &amp; Formazione</button>
+    <!-- Tipo tabs -->
+    <div class="flex gap-3 mb-7" id="tipo-tabs">
+      <button class="tipo-tab active-creator" data-tipo="creator">✦ Creator <span id="tab-creator-count" class="opacity-60 text-xs"></span></button>
+      <button class="tipo-tab" data-tipo="influencer">Influencer &amp; Ospiti <span id="tab-influencer-count" class="opacity-60 text-xs"></span></button>
+    </div>
+
+    <!-- Info banner (visibile su tab influencer) -->
+    <div id="influencer-banner" style="display:none;" class="card-glass rounded-xl px-5 py-3 mb-7 flex items-start gap-3">
+      <span style="font-size:1.1rem;flex-shrink:0;">ℹ️</span>
+      <p class="text-sm text-white/55 leading-relaxed">Questi talent sono presenti a MW2026 come ospiti, speaker o influencer invitati. Non sono inclusi nei pacchetti sponsor standard: contatta Alessandro per valutare attivazioni personalizzate.</p>
+    </div>
+
+    <!-- Filtri -->
+    <div class="mb-4">
+      <!-- Settore -->
+      <div class="filter-scroll mb-3">
+        <div class="flex gap-2 pb-1" id="filter-chips">
+          <button class="filter-chip active" data-sector="all">Tutti</button>
+          <button class="filter-chip" data-sector="marketing">Marketing</button>
+          <button class="filter-chip" data-sector="ai">AI &amp; Tech</button>
+          <button class="filter-chip" data-sector="finance">Finance</button>
+          <button class="filter-chip" data-sector="travel">Travel &amp; Lifestyle</button>
+          <button class="filter-chip" data-sector="sport">Sport &amp; Wellness</button>
+          <button class="filter-chip" data-sector="content">Content Creation</button>
+          <button class="filter-chip" data-sector="crescita">Crescita &amp; Formazione</button>
+        </div>
+      </div>
+      <!-- Followers -->
+      <div class="filter-scroll">
+        <div class="flex gap-2 pb-1" id="fl-chips">
+          <button class="fl-chip active" data-fl="all">Tutti i follower</button>
+          <button class="fl-chip" data-fl="micro">Micro &lt; 50k</button>
+          <button class="fl-chip" data-fl="mid">Mid 50k - 200k</button>
+          <button class="fl-chip" data-fl="macro">Macro 200k+</button>
+        </div>
       </div>
     </div>
+
+    <!-- Count -->
+    <p id="results-count" class="text-xs text-white/30 mb-5 font-display tracking-wider"></p>
 
     <div id="creator-grid"></div>
 
@@ -926,6 +995,8 @@ creators.sort((a, b) => b.f - a.f);
 
 const INIT = 24;
 let currentSector = 'all';
+let currentTipo   = 'creator'; // 'creator' | 'influencer'
+let currentFl     = 'all';     // 'all' | 'micro' | 'mid' | 'macro'
 let showAll = false;
 
 function profileUrl(c) {
@@ -937,21 +1008,21 @@ function initials(name) {
   return name.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
 }
 
-function avatarUrl(name) {
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials(name))}&background=0d1525&color=78E591&size=56&bold=true&font-size=0.45`;
+function fallbackAvatarUrl(name) {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials(name))}&background=0d1525&color=78E591&size=80&bold=true&font-size=0.38`;
 }
 
-function platformBadge(p) {
-  if (p === 'tiktok')  return '<span style="font-size:0.65rem;opacity:0.5;">TikTok</span>';
-  if (p === 'youtube') return '<span style="font-size:0.65rem;opacity:0.5;">YouTube</span>';
-  return '<span style="font-size:0.65rem;opacity:0.5;">Instagram</span>';
+function avatarUrl(c) {
+  if (c.h && c.p === 'instagram') return `https://unavatar.io/instagram/${c.h}`;
+  if (c.h && c.p === 'tiktok')   return `https://unavatar.io/tiktok/${c.h}`;
+  return fallbackAvatarUrl(c.n);
 }
 
 function avatarBorder(t) {
-  if (t === 'i') return 'rgba(105,180,234,0.4)';
-  if (t === 's') return 'rgba(244,200,66,0.4)';
+  if (t === 'i') return 'rgba(105,180,234,0.45)';
+  if (t === 's') return 'rgba(244,200,66,0.45)';
   if (t === 'o') return 'rgba(255,255,255,0.15)';
-  return 'rgba(120,229,145,0.3)';
+  return 'rgba(120,229,145,0.35)';
 }
 
 function tipoBadge(t) {
@@ -963,14 +1034,18 @@ function tipoBadge(t) {
 
 function cardInner(c) {
   const isCreator = !c.t;
+  const fbUrl = fallbackAvatarUrl(c.n);
   return `
     <div class="flex items-center gap-3 mb-3">
-      <div style="width:44px;height:44px;border-radius:50%;border:1.5px solid ${avatarBorder(c.t)};overflow:hidden;flex-shrink:0;">
-        <img src="${avatarUrl(c.n)}" alt="${c.n}" width="44" height="44" style="border-radius:50%;">
+      <div style="width:48px;height:48px;border-radius:50%;border:2px solid ${avatarBorder(c.t)};overflow:hidden;flex-shrink:0;background:#0d1525;">
+        <img src="${avatarUrl(c)}" alt="${c.n}"
+             onerror="this.onerror=null;this.src='${fbUrl}'"
+             width="48" height="48"
+             style="border-radius:50%;width:100%;height:100%;object-fit:cover;">
       </div>
       <div style="min-width:0;">
         <p class="font-display font-semibold text-sm text-white leading-tight" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.n}</p>
-        <p style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:2px;">${c.h ? '@' + c.h : ''}</p>
+        <p style="font-size:0.68rem;color:rgba(255,255,255,0.32);margin-top:2px;">${c.h ? '@' + c.h : ''}</p>
       </div>
     </div>
     <div class="flex items-center justify-between mb-3">
@@ -988,14 +1063,29 @@ function cardInner(c) {
   `;
 }
 
+function getFiltered() {
+  return creators.filter(c => {
+    const matchTipo = currentTipo === 'creator' ? !c.t : !!c.t;
+    const matchSect = currentSector === 'all' || c.s === currentSector;
+    const matchFl   = currentFl === 'all'
+      ? true
+      : currentFl === 'micro' ? c.f < 50000
+      : currentFl === 'mid'   ? (c.f >= 50000 && c.f < 200000)
+      : c.f >= 200000;
+    return matchTipo && matchSect && matchFl;
+  });
+}
+
 function renderGrid() {
   const grid = document.getElementById('creator-grid');
-  const filtered = currentSector === 'all'
-    ? creators
-    : creators.filter(c => c.s === currentSector);
+  const filtered = getFiltered();
 
   const visible = showAll ? filtered : filtered.slice(0, INIT);
   const hidden  = filtered.length - visible.length;
+
+  // Aggiorna count
+  document.getElementById('results-count').textContent =
+    `${filtered.length} profil${filtered.length === 1 ? 'o' : 'i'} trovati`;
 
   grid.innerHTML = visible.map(c => {
     if (c.h) {
@@ -1008,21 +1098,27 @@ function renderGrid() {
   const wrap = document.getElementById('show-more-wrap');
   if (hidden > 0) {
     wrap.style.display = 'block';
-    btn.textContent = `Mostra tutti i ${filtered.length} creator`;
+    btn.textContent = `Mostra tutti i ${filtered.length} profili`;
   } else {
     wrap.style.display = 'none';
   }
-
-  // Update chip counts
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    const sec = chip.dataset.sector;
-    const count = sec === 'all' ? creators.length : creators.filter(c => c.s === sec).length;
-    const label = chip.textContent.replace(/\s*\(\d+\)/, '');
-    chip.textContent = `${label} (${count})`;
-  });
 }
 
-// Filter chips
+// Tipo tabs
+document.getElementById('tipo-tabs').addEventListener('click', e => {
+  const tab = e.target.closest('[data-tipo]');
+  if (!tab) return;
+  currentTipo = tab.dataset.tipo;
+  currentSector = 'all';
+  currentFl = 'all';
+  showAll = false;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.sector === 'all'));
+  document.querySelectorAll('.fl-chip').forEach(c => c.classList.toggle('active', c.dataset.fl === 'all'));
+  updateTabUI();
+  renderGrid();
+});
+
+// Sector filter chips
 document.getElementById('filter-chips').addEventListener('click', e => {
   const chip = e.target.closest('[data-sector]');
   if (!chip) return;
@@ -1033,11 +1129,48 @@ document.getElementById('filter-chips').addEventListener('click', e => {
   renderGrid();
 });
 
+// Follower range chips
+document.getElementById('fl-chips').addEventListener('click', e => {
+  const chip = e.target.closest('[data-fl]');
+  if (!chip) return;
+  document.querySelectorAll('.fl-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  currentFl = chip.dataset.fl;
+  showAll = false;
+  renderGrid();
+});
+
 document.getElementById('show-more-btn').addEventListener('click', () => {
   showAll = true;
   renderGrid();
 });
 
+// Fix titolo influencer tab (niente style inline sul gradient)
+function updateTabUI() {
+  const isCreator = currentTipo === 'creator';
+  document.querySelectorAll('.tipo-tab').forEach(t => {
+    t.classList.remove('active-creator', 'active-influencer');
+    if (t.dataset.tipo === currentTipo) {
+      t.classList.add(isCreator ? 'active-creator' : 'active-influencer');
+    }
+  });
+  document.getElementById('influencer-banner').style.display = isCreator ? 'none' : 'flex';
+  const title    = document.getElementById('network-title');
+  const subtitle = document.getElementById('network-subtitle');
+  if (isCreator) {
+    title.innerHTML  = 'Creator attivabili. <span class="text-grad">Scegli il tuo pacchetto. 🎯</span>';
+    subtitle.textContent = '112 creator confermati con attivazioni sponsor: Reel, Stories, ADV, affiliazione. Filtra per settore e fascia di follower.';
+  } else {
+    title.innerHTML  = 'Influencer &amp; Ospiti. <span class="text-grad">Presenti all\'evento. 🌟</span>';
+    subtitle.textContent = 'Influencer, speaker e ospiti invitati a MW2026. Non inclusi nei pacchetti standard: contatta Alessandro per attivazioni custom.';
+  }
+  const creatorCount    = creators.filter(c => !c.t).length;
+  const influencerCount = creators.filter(c => !!c.t).length;
+  document.getElementById('tab-creator-count').textContent    = `(${creatorCount})`;
+  document.getElementById('tab-influencer-count').textContent = `(${influencerCount})`;
+}
+
+updateTabUI();
 renderGrid();
 </script>
 </body>
