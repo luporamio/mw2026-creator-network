@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Network — Marketers World 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mw: {
+              dark: '#060b14',
+              card: '#0d1525',
+              green: '#78E591',
+              'green-light': '#9FF9B4',
+              blue: '#69B4EA',
+              gold: '#F4C842',
+            }
+          },
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #060b14; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    .text-grad {
+      background: linear-gradient(135deg, #9FF9B4, #69B4EA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-glass {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .card-accent {
+      background: rgba(120,229,145,0.06);
+      border: 1px solid rgba(120,229,145,0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #9FF9B4, #69B4EA);
+      color: #060b14;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-primary:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(120,229,145,0.3); }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-outline:hover { border-color: #78E591; color: #78E591; }
+
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(6,11,20,0); backdrop-filter: blur(0px);
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled { background: rgba(6,11,20,0.92); backdrop-filter: blur(16px); border-bottom-color: rgba(255,255,255,0.06); }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: #78E591;
+    }
+
+    /* Format tags */
+    .fmt {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.06em; padding: 2px 8px;
+      border-radius: 99px; text-transform: uppercase;
+    }
+    .fmt-reel    { background: rgba(120,229,145,0.12); color: #78E591; }
+    .fmt-stories { background: rgba(105,180,234,0.12); color: #69B4EA; }
+    .fmt-adv     { background: rgba(244,200,66,0.12);  color: #F4C842; }
+    .fmt-aff     { background: rgba(180,100,220,0.12); color: #b464dc; }
+
+    /* Filter chips */
+    .filter-chip {
+      padding: 7px 16px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent; color: rgba(255,255,255,0.5);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s; white-space: nowrap;
+    }
+    .filter-chip:hover { border-color: rgba(120,229,145,0.4); color: rgba(255,255,255,0.8); }
+    .filter-chip.active { background: rgba(120,229,145,0.12); border-color: rgba(120,229,145,0.5); color: #9FF9B4; }
+
+    /* Creator card */
+    .creator-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 18px;
+      transition: all 0.25s; display: block;
+    }
+    .creator-card:hover {
+      background: rgba(120,229,145,0.05);
+      border-color: rgba(120,229,145,0.22);
+      transform: translateY(-2px);
+    }
+
+    .sector-chip {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.6rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* Package cards */
+    .pkg {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px; padding: 28px;
+      display: flex; flex-direction: column;
+      transition: border-color 0.25s;
+    }
+    .pkg:hover { border-color: rgba(120,229,145,0.25); }
+    .pkg-featured {
+      background: linear-gradient(135deg, rgba(120,229,145,0.08), rgba(105,180,234,0.07));
+      border: 1px solid rgba(120,229,145,0.3);
+      position: relative;
+    }
+    .pkg-featured::before {
+      content: 'PIU RICHIESTO';
+      position: absolute; top: -13px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #9FF9B4, #69B4EA);
+      color: #060b14;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.12em; padding: 3px 14px; border-radius: 99px;
+    }
+
+    .tl-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #9FF9B4, #69B4EA);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; color: #060b14; font-size: 0.8rem; flex-shrink: 0;
+    }
+
+    .filter-scroll { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .filter-scroll::-webkit-scrollbar { display: none; }
+
+    #creator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .gsap-fade { opacity: 0; transform: translateY(24px); }
+
+    @media (max-width: 640px) {
+      #creator-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      #creator-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) { .hide-mobile { display: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="https://marketersworld.net">
+      <img src="https://marketersworld.net/wp-content/uploads/2023/11/Logo-MarketersWorld-by-wearemarketers.png"
+           alt="Marketers World" class="h-7 w-auto">
+    </a>
+    <div class="hide-mobile flex items-center gap-8">
+      <a href="#formati"         class="text-sm text-white/60 hover:text-white transition-colors">Formati</a>
+      <a href="#pacchetti"       class="text-sm text-white/60 hover:text-white transition-colors">Pacchetti</a>
+      <a href="#creator-network" class="text-sm text-white/60 hover:text-white transition-colors">Creator</a>
+      <a href="#contatto" class="btn-primary px-5 py-2.5 rounded-full text-sm">Richiedi il piano</a>
+    </div>
+    <a href="#contatto" class="md:hidden btn-primary px-4 py-2 rounded-full text-sm">Richiedi piano</a>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section class="relative overflow-hidden" style="min-height: 100vh;">
+  <div class="absolute inset-0">
+    <div style="
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 12% 40%, rgba(120,229,145,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 65% 50% at 88% 18%, rgba(105,180,234,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 40% at 50% 100%, rgba(6,11,20,1) 0%, transparent 60%);
+    "></div>
+    <div style="
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 56px 56px;
+    "></div>
+  </div>
+
+  <div class="relative flex flex-col items-center justify-center text-center px-6 pt-36 pb-20" style="min-height: 100vh;">
+    <div class="inline-flex items-center gap-2.5 card-glass rounded-full px-4 py-2 mb-10">
+      <span class="w-1.5 h-1.5 rounded-full bg-mw-green animate-pulse"></span>
+      <p class="text-xs font-display tracking-widest text-white/70 uppercase">MW2026 Creator Network · Pacchetti Visibilita</p>
+    </div>
+
+    <h1 class="font-display font-bold leading-[1.02] tracking-tight mb-6" style="font-size: clamp(2.5rem, 6vw, 5rem);">
+      <span class="text-grad">112 creator.</span><br>
+      Un solo evento.<br>
+      Il tuo brand ovunque.
+    </h1>
+
+    <p class="text-white/55 text-lg leading-relaxed mb-10 max-w-2xl">
+      Attiva il network di creator selezionati per Marketers World 2026. Reel, Stories, codici sconto, affiliazione: scegli i formati e costruisci la visibilita che vuoi.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-3xl w-full">
+      <div class="card-glass rounded-2xl p-5 text-center">
+        <p class="font-display text-3xl font-bold text-grad mb-1">112</p>
+        <p class="text-xs text-white/40 uppercase tracking-wider">Creator confermati</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center">
+        <p class="font-display text-3xl font-bold text-grad mb-1">5M+</p>
+        <p class="text-xs text-white/40 uppercase tracking-wider">Follower totali</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center">
+        <p class="font-display text-3xl font-bold text-grad mb-1">8</p>
+        <p class="text-xs text-white/40 uppercase tracking-wider">Settori coperti</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center">
+        <p class="font-display text-3xl font-bold text-grad mb-1">4</p>
+        <p class="text-xs text-white/40 uppercase tracking-wider">Formati di contenuto</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <a href="#pacchetti" class="btn-primary px-9 py-4 rounded-full text-base">Vedi i pacchetti</a>
+      <a href="#creator-network" class="btn-outline px-9 py-4 rounded-full text-base">Esplora i creator</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- COME FUNZIONA -->
+<section class="py-20" style="background: rgba(10,16,28,0.9);">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+    <div class="gsap-fade mb-14">
+      <p class="section-label mb-4">Come funziona</p>
+      <h2 class="font-display text-3xl lg:text-4xl font-bold mb-6">
+        Non e advertising.<br><span class="text-grad">E distribuzione autentica.</span>
+      </h2>
+      <p class="text-white/50 leading-relaxed max-w-3xl mx-auto">
+        I creator selezionati per MW2026 producono contenuti organici e sponsorizzati per il tuo brand durante e dopo l'evento. Persone reali che presentano il tuo prodotto alla loro community, nel contesto di fiducia piu potente del mercato digitale italiano.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5 text-left">
+      <div class="card-glass rounded-2xl p-7 gsap-fade">
+        <div class="w-10 h-10 rounded-xl bg-mw-green/10 border border-mw-green/20 flex items-center justify-center text-mw-green font-display font-bold mb-4">01</div>
+        <h3 class="font-display font-semibold text-base mb-2">Creator del tuo settore</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Selezioniamo i creator piu rilevanti per il tuo prodotto: stessa audience, stesso linguaggio, stesso contesto di acquisto.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-7 gsap-fade">
+        <div class="w-10 h-10 rounded-xl bg-mw-blue/10 border border-mw-blue/20 flex items-center justify-center text-mw-blue font-display font-bold mb-4">02</div>
+        <h3 class="font-display font-semibold text-base mb-2">Contenuti nell'evento giusto</h3>
+        <p class="text-white/50 text-sm leading-relaxed">I contenuti vengono prodotti durante MW2026 (16-18 ottobre, Rimini) quando l'audience e massimamente attenta e reattiva.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-7 gsap-fade">
+        <div class="w-10 h-10 rounded-xl bg-mw-green/10 border border-mw-green/20 flex items-center justify-center text-mw-green font-display font-bold mb-4">03</div>
+        <h3 class="font-display font-semibold text-base mb-2">Risultati misurabili</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Codici sconto tracciabili, link affiliazione, report per ogni creator. Non solo quante persone l'hanno visto: quante hanno comprato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FORMATI -->
+<section id="formati" class="py-24">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 gsap-fade">
+      <p class="section-label mb-4">I formati</p>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4">Scegli come <span class="text-grad">apparirai.</span></h2>
+      <p class="text-white/50 max-w-md mx-auto">Ogni pacchetto combina piu formati. Piu touch point attivi, piu alta la frequenza con l'audience.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="card-glass rounded-2xl p-8 border-t-2 gsap-fade" style="border-top-color:#78E591">
+        <span class="fmt fmt-reel inline-block mb-4">Reel</span>
+        <h3 class="font-display font-semibold text-xl mb-3">Reel organico</h3>
+        <p class="text-white/50 text-sm leading-relaxed mb-5">Video nativo sul profilo del creator. Alta retention, alta distribuzione algoritmica. Rimane sul profilo e continua a girare nel tempo.</p>
+        <ul class="space-y-2 text-xs text-white/40">
+          <li class="flex gap-2"><span class="text-mw-green">·</span> Durata: 30 - 90 sec</li>
+          <li class="flex gap-2"><span class="text-mw-green">·</span> Formato verticale 9:16</li>
+          <li class="flex gap-2"><span class="text-mw-green">·</span> Branded mention integrata</li>
+        </ul>
+      </div>
+
+      <div class="card-glass rounded-2xl p-8 border-t-2 gsap-fade" style="border-top-color:#69B4EA">
+        <span class="fmt fmt-stories inline-block mb-4">Stories</span>
+        <h3 class="font-display font-semibold text-xl mb-3">Stories di menzione</h3>
+        <p class="text-white/50 text-sm leading-relaxed mb-5">Contenuto rapido ed efficace. Il creator cita il tuo brand nella giornata all'evento. Alto tasso di engagement con la sua community.</p>
+        <ul class="space-y-2 text-xs text-white/40">
+          <li class="flex gap-2"><span class="text-mw-blue">·</span> Live dall'evento</li>
+          <li class="flex gap-2"><span class="text-mw-blue">·</span> Link o codice sconto</li>
+          <li class="flex gap-2"><span class="text-mw-blue">·</span> Tag brand incluso</li>
+        </ul>
+      </div>
+
+      <div class="card-glass rounded-2xl p-8 border-t-2 gsap-fade" style="border-top-color:#F4C842">
+        <span class="fmt fmt-adv inline-block mb-4">ADV</span>
+        <h3 class="font-display font-semibold text-xl mb-3">Contenuto sponsorizzato</h3>
+        <p class="text-white/50 text-sm leading-relaxed mb-5">Post o reel con partnership label. Costruito con brief condiviso, approvabile prima della pubblicazione. Usabile per amplificazione a pagamento.</p>
+        <ul class="space-y-2 text-xs text-white/40">
+          <li class="flex gap-2"><span class="text-mw-gold">·</span> Brief creativo condiviso</li>
+          <li class="flex gap-2"><span class="text-mw-gold">·</span> Approvazione pre-pubblicazione</li>
+          <li class="flex gap-2"><span class="text-mw-gold">·</span> Partnership label Instagram</li>
+        </ul>
+      </div>
+
+      <div class="card-glass rounded-2xl p-8 border-t-2 gsap-fade" style="border-top-color:#b464dc">
+        <span class="fmt fmt-aff inline-block mb-4">Affiliazione</span>
+        <h3 class="font-display font-semibold text-xl mb-3">Codice + Affiliazione</h3>
+        <p class="text-white/50 text-sm leading-relaxed mb-5">Ogni creator ha un codice personalizzato. Tracci le vendite generate creator per creator. Paghi solo su risultato concreto.</p>
+        <ul class="space-y-2 text-xs text-white/40">
+          <li class="flex gap-2"><span style="color:#b464dc">·</span> Codice univoco per creator</li>
+          <li class="flex gap-2"><span style="color:#b464dc">·</span> Dashboard tracciamento live</li>
+          <li class="flex gap-2"><span style="color:#b464dc">·</span> Commissione su vendita generata</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- PACCHETTI -->
+<section id="pacchetti" class="py-24" style="background: rgba(10,16,28,0.9);">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 gsap-fade">
+      <p class="section-label mb-4">I pacchetti</p>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4">Scala in base<br><span class="text-grad">alla reach che vuoi.</span></h2>
+      <p class="text-white/50 max-w-md mx-auto">Ogni pacchetto e personalizzabile per settore, numero di creator e formati. Partiamo da questo schema.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- STARTER -->
+      <div class="pkg gsap-fade">
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-widest font-display mb-1.5">Starter</p>
+          <h3 class="font-display text-2xl font-bold mb-1">Mention</h3>
+          <p class="text-sm text-white/40">Primo contatto con la community</p>
+        </div>
+        <div class="card-accent rounded-xl p-4 mb-5">
+          <p class="font-display text-3xl font-bold text-mw-green">15</p>
+          <p class="text-xs text-white/50 mt-1">creator nel tuo settore</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-2.5">Formati inclusi</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="fmt fmt-stories">Stories</span>
+            <span class="fmt fmt-aff">Codice Sconto</span>
+          </div>
+        </div>
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-1.5">Reach stimata</p>
+          <p class="font-display font-bold text-xl">300k <span class="text-white/35 text-sm font-normal">impression</span></p>
+        </div>
+        <ul class="space-y-2 flex-1 mb-7 text-sm text-white/60">
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Selezione creator per settore</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Codice sconto personalizzato</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Stories live dall'evento</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Report di performance</li>
+        </ul>
+        <a href="#contatto" class="btn-outline w-full py-3 rounded-xl text-sm">Richiedi info</a>
+      </div>
+
+      <!-- PLUS -->
+      <div class="pkg gsap-fade">
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-widest font-display mb-1.5">Plus</p>
+          <h3 class="font-display text-2xl font-bold mb-1">Activation</h3>
+          <p class="text-sm text-white/40">Affiliazione e tracking risultati</p>
+        </div>
+        <div class="card-accent rounded-xl p-4 mb-5">
+          <p class="font-display text-3xl font-bold text-mw-green">30</p>
+          <p class="text-xs text-white/50 mt-1">creator selezionati per target</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-2.5">Formati inclusi</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="fmt fmt-stories">Stories</span>
+            <span class="fmt fmt-reel">Reel</span>
+            <span class="fmt fmt-aff">Affiliazione</span>
+          </div>
+        </div>
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-1.5">Reach stimata</p>
+          <p class="font-display font-bold text-xl">1.2M <span class="text-white/35 text-sm font-normal">impression</span></p>
+        </div>
+        <ul class="space-y-2 flex-1 mb-7 text-sm text-white/60">
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Tutto il pacchetto Starter</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Reel organico per creator</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Programma affiliazione attivo</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Vendite tracciate per creator</li>
+        </ul>
+        <a href="#contatto" class="btn-outline w-full py-3 rounded-xl text-sm">Richiedi info</a>
+      </div>
+
+      <!-- PRO (featured) -->
+      <div class="pkg pkg-featured gsap-fade">
+        <div class="mb-5">
+          <p class="text-xs text-mw-green uppercase tracking-widest font-display mb-1.5">Pro</p>
+          <h3 class="font-display text-2xl font-bold mb-1">Campaign</h3>
+          <p class="text-sm text-white/40">Campagna multi-formato completa</p>
+        </div>
+        <div class="bg-mw-green/10 border border-mw-green/20 rounded-xl p-4 mb-5">
+          <p class="font-display text-3xl font-bold text-mw-green">50+</p>
+          <p class="text-xs text-white/50 mt-1">creator multi-settore</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-2.5">Formati inclusi</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="fmt fmt-stories">Stories</span>
+            <span class="fmt fmt-reel">Reel</span>
+            <span class="fmt fmt-adv">ADV</span>
+            <span class="fmt fmt-aff">Affiliazione</span>
+          </div>
+        </div>
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-1.5">Reach stimata</p>
+          <p class="font-display font-bold text-xl">3M <span class="text-white/35 text-sm font-normal">impression</span></p>
+        </div>
+        <ul class="space-y-2 flex-1 mb-7 text-sm text-white/60">
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Tutto il pacchetto Plus</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Content calendar pre-durante-post</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Contenuti ADV approvabili</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Brief creativo condiviso</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Report completo di campagna</li>
+        </ul>
+        <a href="#contatto" class="btn-primary w-full py-3 rounded-xl text-sm">Richiedi il piano</a>
+      </div>
+
+      <!-- FULL NETWORK -->
+      <div class="pkg gsap-fade">
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-widest font-display mb-1.5">Full</p>
+          <h3 class="font-display text-2xl font-bold mb-1">Takeover</h3>
+          <p class="text-sm text-white/40">Saturazione totale del network</p>
+        </div>
+        <div class="card-accent rounded-xl p-4 mb-5">
+          <p class="font-display text-3xl font-bold text-mw-green">112</p>
+          <p class="text-xs text-white/50 mt-1">tutto il network creator</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-2.5">Formati inclusi</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="fmt fmt-stories">Stories</span>
+            <span class="fmt fmt-reel">Reel</span>
+            <span class="fmt fmt-adv">ADV</span>
+            <span class="fmt fmt-aff">Affiliazione</span>
+          </div>
+        </div>
+        <div class="mb-5">
+          <p class="text-xs text-white/30 uppercase tracking-wider font-display mb-1.5">Reach stimata</p>
+          <p class="font-display font-bold text-xl">5M+ <span class="text-white/35 text-sm font-normal">impression</span></p>
+        </div>
+        <ul class="space-y-2 flex-1 mb-7 text-sm text-white/60">
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Tutto il pacchetto Pro</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Accesso all'intero network</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Strategia custom dedicata</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Account manager dedicato</li>
+          <li class="flex gap-2"><span class="text-mw-green flex-shrink-0">✓</span> Massima saturazione di mercato</li>
+        </ul>
+        <a href="#contatto" class="btn-outline w-full py-3 rounded-xl text-sm">Richiedi info</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- CREATOR NETWORK -->
+<section id="creator-network" class="py-24">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="mb-10 gsap-fade">
+      <p class="section-label mb-4">Il network</p>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4">Esplora i <span class="text-grad">112 creator.</span></h2>
+      <p class="text-white/50 max-w-lg">Filtra per settore. Tutti confermati per Marketers World 2026, 16-18 ottobre, Rimini.</p>
+    </div>
+
+    <div class="filter-scroll mb-8">
+      <div class="flex gap-3 pb-2" id="filter-chips">
+        <button class="filter-chip active" data-sector="all">Tutti</button>
+        <button class="filter-chip" data-sector="marketing">Marketing</button>
+        <button class="filter-chip" data-sector="ai">AI &amp; Tech</button>
+        <button class="filter-chip" data-sector="finance">Finance</button>
+        <button class="filter-chip" data-sector="travel">Travel &amp; Lifestyle</button>
+        <button class="filter-chip" data-sector="sport">Sport &amp; Wellness</button>
+        <button class="filter-chip" data-sector="content">Content Creation</button>
+        <button class="filter-chip" data-sector="crescita">Crescita &amp; Formazione</button>
+      </div>
+    </div>
+
+    <div id="creator-grid"></div>
+
+    <div id="show-more-wrap" class="text-center mt-8" style="display:none;">
+      <button id="show-more-btn" class="btn-outline px-8 py-3 rounded-full text-sm"></button>
+    </div>
+  </div>
+</section>
+
+
+<!-- COME SI ATTIVA -->
+<section class="py-24" style="background: rgba(10,16,28,0.85);">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-14 gsap-fade">
+      <p class="section-label mb-4">Come si attiva</p>
+      <h2 class="font-display text-4xl font-bold">Dal brief<br><span class="text-grad">al primo contenuto live.</span></h2>
+    </div>
+    <div class="space-y-5">
+      <div class="flex gap-5 items-start gsap-fade">
+        <div class="tl-dot">1</div>
+        <div class="card-glass rounded-2xl p-6 flex-1">
+          <h4 class="font-display font-semibold text-base mb-1.5">Selezione creator</h4>
+          <p class="text-white/50 text-sm">Presentiamo una shortlist di creator per settore e follower. Scegli quelli che vuoi nel tuo pacchetto.</p>
+        </div>
+      </div>
+      <div class="flex gap-5 items-start gsap-fade">
+        <div class="tl-dot">2</div>
+        <div class="card-glass rounded-2xl p-6 flex-1">
+          <h4 class="font-display font-semibold text-base mb-1.5">Brief creativo</h4>
+          <p class="text-white/50 text-sm">Prepariamo il brief condiviso con i creator: tone of voice, messaggi chiave, prodotti da mostrare. Una voce sola, coerente.</p>
+        </div>
+      </div>
+      <div class="flex gap-5 items-start gsap-fade">
+        <div class="tl-dot">3</div>
+        <div class="card-glass rounded-2xl p-6 flex-1">
+          <h4 class="font-display font-semibold text-base mb-1.5">Codici e tracking</h4>
+          <p class="text-white/50 text-sm">Ogni creator riceve un codice sconto personalizzato e link affiliazione univoco. Dal primo giorno sai quante vendite genera ciascuno.</p>
+        </div>
+      </div>
+      <div class="flex gap-5 items-start gsap-fade">
+        <div class="tl-dot">4</div>
+        <div class="card-glass rounded-2xl p-6 flex-1">
+          <h4 class="font-display font-semibold text-base mb-1.5">Contenuti live a MW2026</h4>
+          <p class="text-white/50 text-sm">16-18 ottobre, Rimini. I creator producono Stories, Reel, ADV. Il tuo brand e ovunque per 3 giorni, dentro l'evento piu seguito del digital marketing italiano.</p>
+        </div>
+      </div>
+      <div class="flex gap-5 items-start gsap-fade">
+        <div class="tl-dot">5</div>
+        <div class="card-glass rounded-2xl p-6 flex-1">
+          <h4 class="font-display font-semibold text-base mb-1.5">Report post-campagna</h4>
+          <p class="text-white/50 text-sm">7 giorni dopo l'evento: reach, engagement, click e vendite generate per ogni creator. I dati che il tuo CFO vuole vedere.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section id="contatto" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0" style="
+    background:
+      radial-gradient(ellipse 60% 80% at 25% 50%, rgba(120,229,145,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(105,180,234,0.07) 0%, transparent 60%);
+  "></div>
+  <div class="relative max-w-4xl mx-auto px-6 text-center">
+    <div class="gsap-fade mb-8">
+      <p class="section-label mb-4">Costruiamo il piano</p>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold leading-tight mb-6">
+        Quale settore ti serve?<br><span class="text-grad">Partiamo da li.</span>
+      </h2>
+      <p class="text-white/55 max-w-xl mx-auto mb-10">
+        Selezioniamo i creator per il tuo target, definiamo i formati, costruiamo la campagna insieme. Una call di 30 minuti per capire se siamo il canale giusto.
+      </p>
+    </div>
+    <div class="card-glass rounded-2xl p-10 gsap-fade max-w-xl mx-auto">
+      <h3 class="font-display font-semibold text-xl mb-6">Richiedi il piano creator</h3>
+      <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+      <script>
+        hbspt.forms.create({
+          portalId: "48509650",
+          formId: "64c0e831-0f2c-45cc-aff4-aa5ef029bbd2",
+          region: "na1"
+        });
+      </script>
+      <noscript>
+        <form class="space-y-4">
+          <input type="text"  placeholder="Nome e Cognome" class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none">
+          <input type="email" placeholder="Email aziendale"  class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none">
+          <input type="text"  placeholder="Azienda"          class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none">
+          <select class="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none" style="color:rgba(255,255,255,0.55)">
+            <option value="">Settore target creator</option>
+            <option>Marketing</option>
+            <option>AI &amp; Tech</option>
+            <option>Finance</option>
+            <option>Travel &amp; Lifestyle</option>
+            <option>Sport &amp; Wellness</option>
+            <option>Content Creation</option>
+            <option>Crescita &amp; Formazione</option>
+          </select>
+          <button type="submit" class="btn-primary w-full py-4 rounded-xl text-base font-semibold">Richiedi il piano</button>
+        </form>
+      </noscript>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer style="background:#030710; border-top:1px solid rgba(255,255,255,0.06);">
+  <div class="max-w-7xl mx-auto px-6 py-10 flex flex-wrap items-center justify-between gap-4">
+    <img src="https://marketersworld.net/wp-content/uploads/2023/11/Logo-MarketersWorld-by-wearemarketers.png"
+         alt="Marketers World" class="h-6 w-auto opacity-60">
+    <p class="text-xs text-white/30">16 · 17 · 18 Ottobre 2026 · Rimini Expo Centre</p>
+    <a href="https://wearemarketers.net/privacy-policy/" class="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy Policy</a>
+  </div>
+</footer>
+
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+
+// GSAP fade
+gsap.utils.toArray('.gsap-fade').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+  });
+});
+
+// -------------------------------------------------------
+// CREATOR DATA — da foglio MW2026 Creator/Influencer
+// -------------------------------------------------------
+const creators = [
+  {n:"Alessia Boni",h:"aima_social",p:"instagram",s:"marketing",sL:"Marketing",f:10000,fL:"10k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alberto Morano",h:"albi_legal",p:"instagram",s:"finance",sL:"Finance",f:11000,fL:"11k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessia Centorame",h:"alecento_",p:"instagram",s:"finance",sL:"Finance",f:45000,fL:"45k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessandra Ros",h:"inspirational.project",p:"instagram",s:"sport",sL:"Sport & Wellness",f:4000,fL:"4k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessia Lai",h:"alessiadventure",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:10000,fL:"10k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giorgia Amatori",h:"giorgiaamatori.finance",p:"instagram",s:"finance",sL:"Finance",f:16000,fL:"16k",reel:1,st:1,adv:1,aff:1},
+  {n:"Amer Nour",h:"instamerigo",p:"instagram",s:"ai",sL:"AI & Tech",f:180000,fL:"180k",reel:0,st:1,adv:0,aff:1},
+  {n:"Ami (Pecuniami)",h:"pecuniami",p:"instagram",s:"finance",sL:"Finance",f:63000,fL:"63k",reel:1,st:1,adv:1,aff:1},
+  {n:"Sarah e Fede",h:"and_idigital",p:"instagram",s:"marketing",sL:"Marketing",f:14000,fL:"14k",reel:1,st:1,adv:1,aff:1},
+  {n:"Andrea e Camilla",h:"andrea_e_camilla",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:55000,fL:"55k",reel:1,st:1,adv:1,aff:1},
+  {n:"Anjela Edirisinghe",h:"anjela.edirisinghe",p:"instagram",s:"marketing",sL:"Marketing",f:36000,fL:"36k",reel:1,st:1,adv:1,aff:1},
+  {n:"Anna Pernice",h:"anna_pernice",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:127000,fL:"127k",reel:1,st:1,adv:1,aff:1},
+  {n:"Antonino Gagliano",h:"antoninogagliano98",p:"instagram",s:"ai",sL:"AI & Tech",f:38000,fL:"38k",reel:1,st:1,adv:1,aff:1},
+  {n:"Matteo Argieri",h:"matteo.argieri",p:"instagram",s:"marketing",sL:"Marketing",f:17000,fL:"17k",reel:1,st:1,adv:1,aff:1},
+  {n:"Arianna Ficcanterri",h:"arianna.ficcanterri",p:"instagram",s:"marketing",sL:"Marketing",f:25000,fL:"25k",reel:1,st:1,adv:1,aff:1},
+  {n:"Aurora Crepaldij",h:"aurora.crepaldij",p:"instagram",s:"content",sL:"Content Creation",f:30000,fL:"30k",reel:1,st:1,adv:1,aff:1},
+  {n:"Dennis Avarello",h:"dennisavarello.bsn",p:"instagram",s:"ai",sL:"AI & Tech",f:46000,fL:"46k",reel:1,st:1,adv:1,aff:1},
+  {n:"Isabella Berardi",h:"isabella_thefashioncherrydiary",p:"instagram",s:"marketing",sL:"Marketing",f:35000,fL:"35k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giulia Biamino",h:"giulia.biamino",p:"instagram",s:"marketing",sL:"Marketing",f:20000,fL:"20k",reel:1,st:1,adv:1,aff:1},
+  {n:"Bianca Malgioglio",h:"iambiancam",p:"instagram",s:"sport",sL:"Sport & Wellness",f:55000,fL:"55k",reel:1,st:1,adv:1,aff:1},
+  {n:"Andrea Bonomo",h:"andreabonomo_mktg",p:"instagram",s:"marketing",sL:"Marketing",f:5000,fL:"5k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eleonora Bracaglia",h:"eleonorabracaglia",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:34000,fL:"34k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessio Bucci",h:"topdicanva",p:"instagram",s:"marketing",sL:"Marketing",f:80000,fL:"80k",reel:1,st:1,adv:1,aff:1},
+  {n:"Irene Buosi",h:"irenebuosi",p:"instagram",s:"marketing",sL:"Marketing",f:13000,fL:"13k",reel:1,st:1,adv:1,aff:1},
+  {n:"Carlotta Sgarra",h:"carlottasgarra.web",p:"instagram",s:"content",sL:"Content Creation",f:12000,fL:"12k",reel:1,st:1,adv:1,aff:1},
+  {n:"Chantal",h:"chanti_unicamente",p:"instagram",s:"content",sL:"Content Creation",f:14000,fL:"14k",reel:1,st:1,adv:1,aff:1},
+  {n:"Arianna Chieli",h:"ariannachieli",p:"instagram",s:"content",sL:"Content Creation",f:47000,fL:"47k",reel:1,st:1,adv:1,aff:1},
+  {n:"Erica Cicuto",h:"erica_cicuto_psicologa",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:83000,fL:"83k",reel:1,st:1,adv:1,aff:1},
+  {n:"Francesca Bilotto",h:"markettaracinica",p:"instagram",s:"marketing",sL:"Marketing",f:26000,fL:"26k",reel:1,st:1,adv:1,aff:1},
+  {n:"Mattia Cittadino",h:"mattiacittadino",p:"instagram",s:"content",sL:"Content Creation",f:148000,fL:"148k",reel:1,st:1,adv:1,aff:1},
+  {n:"Clara Donghi",h:"claradonghi",p:"instagram",s:"sport",sL:"Sport & Wellness",f:36000,fL:"36k",reel:1,st:1,adv:1,aff:1},
+  {n:"Claudia Casanova",h:"claudia__casanova",p:"instagram",s:"sport",sL:"Sport & Wellness",f:76000,fL:"76k",reel:1,st:1,adv:1,aff:1},
+  {n:"Cori Verga",h:"cori_verga",p:"instagram",s:"marketing",sL:"Marketing",f:10000,fL:"10k",reel:1,st:1,adv:1,aff:1},
+  {n:"Cristi Silvestri",h:"cristisilvestriv",p:"instagram",s:"marketing",sL:"Marketing",f:15000,fL:"15k",reel:1,st:1,adv:1,aff:1},
+  {n:"Damaride",h:"lovelydamaride",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:149000,fL:"149k",reel:1,st:1,adv:1,aff:1},
+  {n:"Damiano Broccatelli",h:"damianotech",p:"instagram",s:"ai",sL:"AI & Tech",f:81000,fL:"81k",reel:1,st:1,adv:1,aff:1},
+  {n:"Davide Battistelli",h:"davide__battistelli",p:"instagram",s:"finance",sL:"Finance",f:12000,fL:"12k",reel:1,st:1,adv:1,aff:1},
+  {n:"Dennis Castelluzzo",h:"denniscastelluzzo",p:"instagram",s:"marketing",sL:"Marketing",f:110000,fL:"110k",reel:1,st:1,adv:1,aff:1},
+  {n:"Detective Skills",h:"detective.skills",p:"instagram",s:"marketing",sL:"Marketing",f:133000,fL:"133k",reel:1,st:1,adv:1,aff:1},
+  {n:"Daria Nania",h:"digidaria_",p:"instagram",s:"marketing",sL:"Marketing",f:9000,fL:"9k",reel:1,st:1,adv:1,aff:1},
+  {n:"Dipi Tips",h:"dipitips",p:"instagram",s:"ai",sL:"AI & Tech",f:84000,fL:"84k",reel:1,st:1,adv:1,aff:1},
+  {n:"Domenique Nicolo",h:"dominiquinho",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:16000,fL:"16k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eduardo Riccio",h:"infotricks_",p:"instagram",s:"content",sL:"Content Creation",f:235000,fL:"235k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eleonora Barbone",h:"eleonora.barbone",p:"instagram",s:"marketing",sL:"Marketing",f:7000,fL:"7k",reel:1,st:1,adv:1,aff:1},
+  {n:"Elisa Agresti",h:"elisa_aisocialstrategist",p:"instagram",s:"ai",sL:"AI & Tech",f:8000,fL:"8k",reel:1,st:1,adv:1,aff:1},
+  {n:"Emil Ceron",h:"limedigital.it",p:"instagram",s:"marketing",sL:"Marketing",f:9000,fL:"9k",reel:1,st:1,adv:1,aff:1},
+  {n:"Emmanuel Aiello",h:"tishi.mov",p:"instagram",s:"marketing",sL:"Marketing",f:43000,fL:"43k",reel:1,st:1,adv:1,aff:1},
+  {n:"Fabiana Cioffi",h:"destinazionefab",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:3000,fL:"3k",reel:1,st:1,adv:1,aff:1},
+  {n:"Fabio D'Alessandro",h:"fabio.dales",p:"instagram",s:"ai",sL:"AI & Tech",f:58000,fL:"58k",reel:1,st:1,adv:1,aff:1},
+  {n:"Fabio Marchione",h:"fabiomarchione81",p:"instagram",s:"finance",sL:"Finance",f:17000,fL:"17k",reel:1,st:1,adv:1,aff:1},
+  {n:"Fame di Viaggi",h:"famediviaggi",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:26000,fL:"26k",reel:1,st:1,adv:1,aff:1},
+  {n:"Katia Smiraglia e Ale Perego",h:"famwithoutplan",p:"instagram",s:"content",sL:"Content Creation",f:32000,fL:"32k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federica Ferraro",h:"federica_ferraro",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:130000,fL:"130k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federico Casadei",h:"fede_casad",p:"instagram",s:"marketing",sL:"Marketing",f:8000,fL:"8k",reel:1,st:1,adv:1,aff:1},
+  {n:"Luca Ferraina",h:"pianetaferra",p:"instagram",s:"ai",sL:"AI & Tech",f:102000,fL:"102k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eleonora Ferrari",h:"ferrari_eleonora_",p:"instagram",s:"finance",sL:"Finance",f:13000,fL:"13k",reel:1,st:1,adv:1,aff:1},
+  {n:"Simone Filippone",h:"simonesickwolf_official",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:107000,fL:"107k",reel:1,st:1,adv:1,aff:1},
+  {n:"Finn Kahlbenn",h:"finnkalbhenn",p:"instagram",s:"sport",sL:"Sport & Wellness",f:12000,fL:"12k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eleonora Fioravante",h:"travel.fiore",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:47000,fL:"47k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giulia Fiorini",h:"thelazysunflower_",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:25000,fL:"25k",reel:1,st:1,adv:1,aff:1},
+  {n:"Florencia Vieyra",h:"florvieyra",p:"instagram",s:"marketing",sL:"Marketing",f:49000,fL:"49k",reel:1,st:1,adv:1,aff:1},
+  {n:"Nicolas Fontana",h:"iltuosmartworking",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:62000,fL:"62k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federica Rossi",h:"foodfede_",p:"instagram",s:"content",sL:"Content Creation",f:105000,fL:"105k",reel:1,st:1,adv:1,aff:1},
+  {n:"Frank (Chiedi a Frank)",h:"chiediafrank",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:81000,fL:"81k",reel:1,st:1,adv:1,aff:1},
+  {n:"Frenky Morelli",h:"frenkymorelli",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:19000,fL:"19k",reel:1,st:1,adv:1,aff:1},
+  {n:"Luca Ventura",h:"futuriscenari",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:16000,fL:"16k",reel:1,st:1,adv:1,aff:1},
+  {n:"Gaia Banfi",h:"gaia.banfi",p:"instagram",s:"marketing",sL:"Marketing",f:19000,fL:"19k",reel:1,st:1,adv:1,aff:1},
+  {n:"Sara Gasparini",h:"saragasparini_business",p:"instagram",s:"finance",sL:"Finance",f:271000,fL:"271k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giada Guida",h:"giadatiguida",p:"tiktok",s:"marketing",sL:"Marketing",f:16000,fL:"16k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessia Giammona",h:"alessias.travels",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:15000,fL:"15k",reel:1,st:1,adv:1,aff:1},
+  {n:"Gianmarco Prompizii",h:"gianma.ai",p:"instagram",s:"ai",sL:"AI & Tech",f:17000,fL:"17k",reel:1,st:1,adv:1,aff:1},
+  {n:"Gianni Caldarola",h:"gianni_caldarola",p:"instagram",s:"ai",sL:"AI & Tech",f:16000,fL:"16k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giorgia Lavina",h:"giorgia.lavina",p:"instagram",s:"sport",sL:"Sport & Wellness",f:58000,fL:"58k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giorgia Bocchino",h:"giorgina_tuttavita",p:"instagram",s:"content",sL:"Content Creation",f:11000,fL:"11k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giulia Elia",h:"giuliahelia",p:"instagram",s:"sport",sL:"Sport & Wellness",f:11000,fL:"11k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giulia Gullone",h:"giuliagullone",p:"instagram",s:"finance",sL:"Finance",f:13000,fL:"13k",reel:1,st:1,adv:1,aff:1},
+  {n:"Eugenio Guzzo",h:"eugenio_guzzo",p:"instagram",s:"content",sL:"Content Creation",f:17000,fL:"17k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federica Ignacchiti",h:"dov.emiracconto",p:"instagram",s:"marketing",sL:"Marketing",f:26000,fL:"26k",reel:1,st:1,adv:1,aff:1},
+  {n:"Il Duo del Digitale",h:"ilduodeldigitale_",p:"instagram",s:"marketing",sL:"Marketing",f:41000,fL:"41k",reel:1,st:1,adv:1,aff:1},
+  {n:"Isabella Silenzi",h:"isabellasilenzi",p:"instagram",s:"sport",sL:"Sport & Wellness",f:9000,fL:"9k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giacomo Treggiari",h:"dr.jacktraveller",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:99000,fL:"99k",reel:1,st:1,adv:1,aff:1},
+  {n:"Joselena Zaccaro",h:"joselenazaccaro",p:"instagram",s:"marketing",sL:"Marketing",f:89000,fL:"89k",reel:1,st:1,adv:1,aff:1},
+  {n:"Micaela Fiore",h:"kessart.puglia",p:"instagram",s:"marketing",sL:"Marketing",f:38000,fL:"38k",reel:1,st:1,adv:1,aff:1},
+  {n:"Beatrice Mazzanti",h:"lamarketer.ai",p:"instagram",s:"ai",sL:"AI & Tech",f:10000,fL:"10k",reel:1,st:1,adv:1,aff:1},
+  {n:"Leonardo Pippa",h:"leonardo316p",p:"instagram",s:"ai",sL:"AI & Tech",f:44000,fL:"44k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federica Le Rose",h:"lospecchiodichicca",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:180000,fL:"180k",reel:1,st:1,adv:1,aff:1},
+  {n:"Letizia Nikehasani",h:"letismind",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:45000,fL:"45k",reel:1,st:1,adv:1,aff:1},
+  {n:"Maleducati Finanziari",h:"maleducatifinanziari",p:"instagram",s:"finance",sL:"Finance",f:68000,fL:"68k",reel:1,st:1,adv:1,aff:1},
+  {n:"Manifest Digital",h:"manifest_digital_",p:"instagram",s:"ai",sL:"AI & Tech",f:22000,fL:"22k",reel:1,st:1,adv:1,aff:1},
+  {n:"Marika Carli",h:"marika.carli",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:12500,fL:"12k",reel:1,st:1,adv:1,aff:1},
+  {n:"Marika Altomare",h:"marikatraveltips",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:72000,fL:"72k",reel:1,st:1,adv:1,aff:1},
+  {n:"Mario Giac",h:"mario.giac",p:"instagram",s:"marketing",sL:"Marketing",f:76000,fL:"76k",reel:1,st:1,adv:1,aff:1},
+  {n:"Marta Franceschina",h:"marta_franceschina",p:"instagram",s:"finance",sL:"Finance",f:9000,fL:"9k",reel:1,st:1,adv:1,aff:1},
+  {n:"Matteo Mattiussi",h:"matteo_mattiussi",p:"instagram",s:"marketing",sL:"Marketing",f:22000,fL:"22k",reel:1,st:1,adv:1,aff:1},
+  {n:"Mattia Catastini",h:"mattiacatastini",p:"instagram",s:"marketing",sL:"Marketing",f:11000,fL:"11k",reel:1,st:1,adv:1,aff:1},
+  {n:"Melinda",h:"melinda_fromfree",p:"instagram",s:"ai",sL:"AI & Tech",f:115000,fL:"115k",reel:1,st:1,adv:1,aff:1},
+  {n:"Federica Miceli",h:"fede_miceli",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:68000,fL:"68k",reel:1,st:1,adv:1,aff:1},
+  {n:"Mirko Papadopoli",h:"mirkopapadopoli",p:"instagram",s:"ai",sL:"AI & Tech",f:21000,fL:"21k",reel:1,st:1,adv:1,aff:1},
+  {n:"Francesca Simbula",h:"mirtilla.malcontent",p:"instagram",s:"marketing",sL:"Marketing",f:13000,fL:"13k",reel:1,st:1,adv:1,aff:1},
+  {n:"Valerio Novelli",h:"valerionovelli",p:"instagram",s:"marketing",sL:"Marketing",f:8000,fL:"8k",reel:1,st:1,adv:1,aff:1},
+  {n:"Giuseppe Motta",h:"beppe.motta",p:"instagram",s:"content",sL:"Content Creation",f:24000,fL:"24k",reel:1,st:1,adv:1,aff:1},
+  {n:"Nadia Orlando",h:"nadia__orlando",p:"instagram",s:"content",sL:"Content Creation",f:8000,fL:"8k",reel:1,st:1,adv:1,aff:0},
+  {n:"Maria Grazia Neri",h:"mariagrazianeri",p:"instagram",s:"marketing",sL:"Marketing",f:8000,fL:"8k",reel:1,st:1,adv:1,aff:1},
+  {n:"Nicolas Lombardo",h:"nicolasllombardo",p:"instagram",s:"marketing",sL:"Marketing",f:103000,fL:"103k",reel:1,st:1,adv:1,aff:1},
+  {n:"Noemi Saija",h:"noemihackz",p:"instagram",s:"ai",sL:"AI & Tech",f:101000,fL:"101k",reel:1,st:1,adv:1,aff:1},
+  {n:"Francesca Bussinello",h:"nomadyae",p:"instagram",s:"travel",sL:"Travel & Lifestyle",f:17000,fL:"17k",reel:1,st:1,adv:1,aff:1},
+  {n:"Alessandra Nuzzo",h:"lavoroesocial",p:"instagram",s:"marketing",sL:"Marketing",f:223000,fL:"223k",reel:1,st:1,adv:1,aff:1},
+  {n:"Pamela Ambrosini",h:"pam.ambrosini",p:"instagram",s:"crescita",sL:"Crescita & Formazione",f:14000,fL:"14k",reel:1,st:1,adv:1,aff:1},
+  {n:"Clarissa Picchi",h:"clarissapicchi",p:"instagram",s:"marketing",sL:"Marketing",f:15000,fL:"15k",reel:1,st:1,adv:1,aff:1},
+  {n:"Massimiliano Pioli",h:"massimiliano_pioli",p:"tiktok",s:"ai",sL:"AI & Tech",f:18000,fL:"18k",reel:1,st:1,adv:1,aff:1},
+  {n:"Davide Giuliano",h:"davide.positioning",p:"instagram",s:"marketing",sL:"Marketing",f:7000,fL:"7k",reel:1,st:1,adv:1,aff:1},
+  {n:"Oscar e Alessio",h:"professorideisocial",p:"instagram",s:"marketing",sL:"Marketing",f:108000,fL:"108k",reel:1,st:1,adv:1,aff:1},
+];
+
+creators.sort((a, b) => b.f - a.f);
+
+const INIT = 24;
+let currentSector = 'all';
+let showAll = false;
+
+function profileUrl(c) {
+  if (c.p === 'tiktok') return `https://www.tiktok.com/@${c.h}`;
+  return `https://www.instagram.com/${c.h}`;
+}
+
+function initials(name) {
+  return name.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+}
+
+function avatarUrl(name) {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials(name))}&background=0d1525&color=78E591&size=56&bold=true&font-size=0.45`;
+}
+
+function platformBadge(p) {
+  if (p === 'tiktok')  return '<span style="font-size:0.65rem;opacity:0.5;">TikTok</span>';
+  if (p === 'youtube') return '<span style="font-size:0.65rem;opacity:0.5;">YouTube</span>';
+  return '<span style="font-size:0.65rem;opacity:0.5;">Instagram</span>';
+}
+
+function renderGrid() {
+  const grid = document.getElementById('creator-grid');
+  const filtered = currentSector === 'all'
+    ? creators
+    : creators.filter(c => c.s === currentSector);
+
+  const visible = showAll ? filtered : filtered.slice(0, INIT);
+  const hidden  = filtered.length - visible.length;
+
+  grid.innerHTML = visible.map(c => `
+    <a href="${profileUrl(c)}" target="_blank" rel="noopener" class="creator-card">
+      <div class="flex items-center gap-3 mb-3">
+        <div style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(120,229,145,0.3);overflow:hidden;flex-shrink:0;">
+          <img src="${avatarUrl(c.n)}" alt="${c.n}" width="44" height="44" style="border-radius:50%;">
+        </div>
+        <div style="min-width:0;">
+          <p class="font-display font-semibold text-sm text-white leading-tight" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.n}</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:2px;">@${c.h}</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="sector-chip">${c.sL}</span>
+        <span class="font-display font-bold text-mw-green" style="font-size:0.85rem;">${c.fL}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${c.reel ? '<span class="fmt fmt-reel">Reel</span>' : ''}
+        ${c.st   ? '<span class="fmt fmt-stories">Stories</span>' : ''}
+        ${c.adv  ? '<span class="fmt fmt-adv">ADV</span>' : ''}
+        ${c.aff  ? '<span class="fmt fmt-aff">Affiliazione</span>' : ''}
+      </div>
+    </a>
+  `).join('');
+
+  const btn  = document.getElementById('show-more-btn');
+  const wrap = document.getElementById('show-more-wrap');
+  if (hidden > 0) {
+    wrap.style.display = 'block';
+    btn.textContent = `Mostra tutti i ${filtered.length} creator`;
+  } else {
+    wrap.style.display = 'none';
+  }
+
+  // Update chip counts
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    const sec = chip.dataset.sector;
+    const count = sec === 'all' ? creators.length : creators.filter(c => c.s === sec).length;
+    const label = chip.textContent.replace(/\s*\(\d+\)/, '');
+    chip.textContent = `${label} (${count})`;
+  });
+}
+
+// Filter chips
+document.getElementById('filter-chips').addEventListener('click', e => {
+  const chip = e.target.closest('[data-sector]');
+  if (!chip) return;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  currentSector = chip.dataset.sector;
+  showAll = false;
+  renderGrid();
+});
+
+document.getElementById('show-more-btn').addEventListener('click', () => {
+  showAll = true;
+  renderGrid();
+});
+
+renderGrid();
+</script>
+</body>
+</html>
